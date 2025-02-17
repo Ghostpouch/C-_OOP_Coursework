@@ -9,7 +9,16 @@
 using namespace std;  // Use the std namespace globally
 
 Owner owner("Elaine's Movie Rentals");
-Customer customer("Jane Doe", 1);
+
+// Add customers to a vector
+vector<Customer> customers = {
+    Customer("Hamilton Cormack", 1),
+    Customer("George Gill", 2),
+    Customer("Chris Taylor", 3),
+    Customer("Mary Forge", 4),
+    Customer("Remy Boffey", 5),
+    Customer("Martha Geldard", 6)
+};
 
 // Add movies to inventory inside the main function
 Movie movie1("Alien", "Sci-Fi", true);      // Movie is available
@@ -43,7 +52,7 @@ int main() {
     do {
         showMenu();
         cin >> choice;
-        
+
         string movieTitle;  // Move declaration outside of switch
         
         switch (choice) {
@@ -52,38 +61,104 @@ int main() {
                 cout << "Enter movie title to rent: ";
                 cin.ignore();  // Clear input buffer
                 getline(cin, movieTitle);  // Allow spaces in movie titles
-        
-            // Access the owner's inventory using the getter method
-            for (auto& movie : owner.getInventory()) {
-                if (movie.getTitle() == movieTitle && movie.isAvailable()) {
-                    customer.addRental(&movie);
-                    movie.rentMovie();  // Mark the movie as rented
-                    cout << "You have rented " << movieTitle << endl;
-                    break;
-                } else {
-                    cout << "Movie not available or not found.\n";
+
+                // Find the selected movie
+                Movie* selectedMovie = nullptr;
+                for (auto& movie : owner.getInventory()) {
+                    if (movie.getTitle() == movieTitle && movie.isAvailable()) {
+                        selectedMovie = &movie;
+                        break;
+                    }
                 }
-            }
-            break;
+
+                if (selectedMovie) {
+                    cout << "Enter customer ID (1-6): ";
+                    int customerID;
+                    cin >> customerID;
+
+                    // Check if the customer ID is valid
+                    if (customerID >= 1 && customerID <= 6) {
+                        customers[customerID - 1].addRental(selectedMovie);
+                        cout << "Movie rented to " << customers[customerID - 1].getName() << endl;
+                        selectedMovie->rentMovie();  // Mark the movie as rented
+                    } else {
+                        cout << "Invalid customer ID!" << endl;
+                    }
+                } else {
+                    cout << "Movie not found or not available!" << endl;
+                }
+                break;
+
+
+                if (selectedMovie) {
+                    cout << "Enter customer ID (1-6): ";
+                    int customerID;
+                    cin >> customerID;
+
+                    // Check if the customer ID is valid
+                    if (customerID >= 1 && customerID <= 6) {
+                        customers[customerID - 1].addRental(selectedMovie);
+                        cout << "Movie rented to " << customers[customerID - 1].getName() << endl;
+                        selectedMovie->rentMovie();  // Mark the movie as rented
+                    } else {
+                        cout << "Invalid customer ID!" << endl;
+                    }
+                } else {
+                    cout << "Movie not found or not available!" << endl;
+                }
+                break;
 
             case 2:
-                customer.viewRentedMovies();
-                cout << "Enter movie title to return: ";
-                cin.ignore();  // Clear input buffer
-                getline(cin, movieTitle);  // Allow spaces in movie titles
-                
-                // Attempt to return the movie
-                customer.removeRental(&movie1);  // Simplified, you should improve to check for actual rented movies
+                cout << "Enter customer ID to return movie: ";
+                int returnCustomerID;
+                cin >> returnCustomerID;
+
+                if (returnCustomerID >= 1 && returnCustomerID <= 6) {
+                    // Ask for movie title to return
+                    customers[returnCustomerID - 1].viewRentedMovies();
+                    cout << "Enter movie title to return: ";
+                    cin.ignore();
+                    getline(cin, movieTitle);  // Allow spaces in movie titles
+
+                    // Search for the movie to return
+                    Movie* movieToReturn = nullptr;
+                    for (auto& movie : owner.getInventory()) {
+                        if (movie.getTitle() == movieTitle && !movie.isAvailable()) {
+                            movieToReturn = &movie;  // Found the movie to return
+                            break;
+                        }
+                    }
+
+                    if (movieToReturn) {
+                        // Call removeRental with the movie pointer
+                        customers[returnCustomerID - 1].removeRental(movieToReturn);
+                        movieToReturn->returnMovie();  // Mark movie as returned
+                        cout << "You have returned " << movieTitle << endl;
+                    } else {
+                        cout << "Movie not found or not rented!" << endl;
+                    }
+                } else {
+                    cout << "Invalid customer ID!" << endl;
+                }
                 break;
-                
+
+
             case 3:
-                customer.viewRentedMovies();
+                cout << "Enter customer ID to view rented movies: ";
+                int viewCustomerID;
+                cin >> viewCustomerID;
+
+                if (viewCustomerID >= 1 && viewCustomerID <= 6) {
+                    customers[viewCustomerID - 1].viewRentedMovies();
+                } else {
+                    cout << "Invalid customer ID!" << endl;
+                }
                 break;
-                
+
             case 4:
                 cout << "Thank you for using the system!\n";
                 break;
-                
+
             default:
                 cout << "Invalid choice. Please try again.\n";
                 break;
