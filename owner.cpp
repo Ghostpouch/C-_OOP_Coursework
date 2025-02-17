@@ -6,7 +6,6 @@ using namespace std;  // Use the std namespace globally
 // Adds a movie to the inventory
 void Owner::addMovie(const Movie& movie) {
     inventory.push_back(movie);
-    cout << "Movie added: " << movie.getTitle() << endl;
 }
 
 // Removes a movie from the inventory if found

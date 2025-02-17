@@ -8,7 +8,7 @@
 
 using namespace std;  // Use the std namespace globally
 
-Owner owner("John's Movie Rentals");
+Owner owner("Elaine's Movie Rentals");
 Customer customer("Jane Doe", 1);
 
 // Add movies to inventory inside the main function
