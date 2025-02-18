@@ -2,33 +2,27 @@
 #define MOVIE_H
 
 #include <string>
-
-using namespace std;  // Use the std namespace globally
+using namespace std;
 
 class Movie {
 private:
-    string title;      // Stores the name of the movie
-    string genre;      // Stores the genre of the movie
-    bool availability; // Stores whether the movie is available (true/false)
+    string title;
+    string genre;
+    bool available;
 
 public:
-    // Constructor: Initializes a movie with a title, genre, and availability
-    Movie(string t, string g, bool avail);  // Added availability parameter
+    Movie(string title, string genre, bool available)
+        : title(title), genre(genre), available(available) {}
 
-    // Getter method: Returns the movie title
     string getTitle() const { return title; }
+    bool isAvailable() const { return available; }
+    void rentMovie() { available = false; }
+    void returnMovie() { available = true; }
 
-    // Getter method: Returns the movie genre
-    string getGenre() const { return genre; }
-
-    // Getter method: Returns availability status (true = available, false = rented)
-    bool isAvailable() const { return availability; }
-
-    // Marks the movie as rented by setting availability to false
-    void rentMovie() { availability = false; }
-
-    // Marks the movie as returned by setting availability to true
-    void returnMovie() { availability = true; }
+    void display() const {
+        cout << "Title: " << title << ", Genre: " << genre << ", "
+             << (available ? "Available" : "Not Available") << endl;
+    }
 };
 
-#endif // Ends the header file protection
+#endif

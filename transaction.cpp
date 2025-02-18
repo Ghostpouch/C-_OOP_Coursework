@@ -1,5 +1,7 @@
 #include "transaction.h"
-using namespace std; // Now we don't need std:: everywhere!
+#include <iostream>
+
+using namespace std;  // Now we don't need std:: everywhere!
 
 // Constructor: Initializes a transaction with rental details
 Transaction::Transaction(Customer* c, Movie* m, string rentDate)
