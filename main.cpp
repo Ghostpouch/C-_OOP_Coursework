@@ -91,32 +91,32 @@ int main() {
                     cin.ignore(); // Ignore leftover newline character
                     getline(cin, movieTitle); // Get the movie title input from the user
 
-                // Find the movie to return
-                Movie* movieToReturn = nullptr;
-                for (auto& movie : movies) {
-                    cout << "Checking movie: " << movie.getTitle() << " | Available: " << movie.isAvailable() << endl; // Debugging message
-                    if (movie.getTitle() == movieTitle && !movie.isAvailable()) {
-                        movieToReturn = &movie;
-                        cout << "DEBUG: Found movie to return: " << movieTitle << endl; // Confirm if found
-                        break;
+                    // Find the movie to return
+                    Movie* movieToReturn = nullptr; // Declare movieToReturn BEFORE the loop
+                    for (auto& movie : movies) {
+                        cout << "Checking movie: " << movie.getTitle() << " | Available: " << movie.isAvailable() << endl; // Debugging message
+                        if (movie.getTitle() == movieTitle && !movie.isAvailable()) {
+                            movieToReturn = &movie;
+                            cout << "DEBUG: Found movie to return: " << movieTitle << endl; // Confirm if found
+                            break;
+                        }
                     }
-                }
 
                     // Check if the movie was found
-                    if (!movieToReturn) {
-                        cout << "DEBUG: Movie not found in rented list!" << endl;
-                    }
-                    
-                    if (movieToReturn) { // If the movie is found to return
-                        movieToReturn->returnMovie(); // Mark the movie as returned
+                    if (movieToReturn) { 
+                        cout << "DEBUG: Returning movie: " << movieTitle << endl; // Debug message before returning
+                        movieToReturn->returnMovie(); // Mark the movie as available
+                        cout << "DEBUG: Movie is now available again." << endl; // Confirm status change
                         cout << "You have returned " << movieTitle << endl;
                     } else {
+                        cout << "DEBUG: Movie not found in rented list!" << endl;
                         cout << "Movie not found or not rented!" << endl;
                     }
                 } else {
-                    cout << "Invalid customer ID!" << endl;
+                    cout << "Invalid customer ID!" << endl; // This handles invalid customer ID input
                 }
                 break;
+
 
             case 3: // Option to view rented movies
                 cout << "Enter customer ID to view rented movies: ";
