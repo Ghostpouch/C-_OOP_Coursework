@@ -82,6 +82,7 @@ int main() {
                 break;
 
             case 2: // Option to return a movie
+                cout << "DEBUG: Entering case 2 - Returning a movie" << endl;  // Check if we're entering case 2
                 cout << "Enter customer ID to return movie: ";
                 cin >> customerID; // Get customer ID input
 
@@ -94,7 +95,6 @@ int main() {
                     // Find the movie to return
                     Movie* movieToReturn = nullptr;
                     for (auto& movie : movies) {
-                        // Debugging message to check what movie is being checked
                         cout << "DEBUG: Checking movie: " << movie.getTitle() 
                             << " | Available: " << movie.isAvailable() << endl; // Print the movie title and its availability
 
