@@ -1,3 +1,4 @@
+#include <iostream>
 #include "customer.h"
 
 using namespace std;
@@ -13,15 +14,27 @@ void Customer::addRental(Movie* movie) {
     movie->rentMovie();
 }
 
-void Customer::removeRental(Movie* movie) {
-    for (size_t i = 0; i < rentedMovies.size(); i++) {
-        if (rentedMovies[i] == movie) {
-            rentedMovies.erase(rentedMovies.begin() + i);
+#include "customer.h"
+
+// This should match the declaration in customer.h
+void Customer::removeRental(Movie* movie, string returnDate) {
+    for (auto it = rentedMovies.begin(); it != rentedMovies.end(); ++it) {
+        if (*it == movie) {
+            rentedMovies.erase(it);
             movie->returnMovie();
             break;
         }
     }
+
+    // Mark the transaction as returned
+    for (auto& transaction : transactions) {
+        if (transaction.getReturnStatus() == false && transaction.getReturnDate() == "Not returned yet") {
+            transaction.markReturned(returnDate); // Mark as returned
+            break;
+        }
+    }
 }
+
 
 void Customer::viewRentedMovies() const {
     if (rentedMovies.empty()) {

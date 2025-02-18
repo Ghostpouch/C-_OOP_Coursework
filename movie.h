@@ -15,6 +15,7 @@ public:
         : title(title), genre(genre), available(available) {}
 
     string getTitle() const { return title; }
+    string getGenre() const { return genre; }  // Add this line
     bool isAvailable() const { return available; }
     void rentMovie() { available = false; }
     void returnMovie() { available = true; }

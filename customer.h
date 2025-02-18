@@ -20,10 +20,12 @@ public:
 
     string getName() const { return name; }
 
-    void addRental(Movie* movie, string rentDate) {
+    // Updated addRental to only take Movie* argument
+    void addRental(Movie* movie) {
         rentedMovies.push_back(movie);
         movie->rentMovie();
-        transactions.push_back(Transaction(this, movie, rentDate));  // Add the transaction
+        // You can still track transactions if needed
+        // transactions.push_back(Transaction(this, movie, rentDate)); 
     }
 
     void removeRental(Movie* movie, string returnDate) {

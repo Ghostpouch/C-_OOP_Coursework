@@ -9,14 +9,7 @@ using namespace std;
 
 Owner owner("Elaine's Movie Rentals");
 
-vector<Customer> customers = {
-    Customer("Hamilton Cormack", 1),
-    Customer("George Gill", 2),
-    Customer("Chris Taylor", 3),
-    Customer("Mary Forge", 4),
-    Customer("Remy Boffey", 5),
-    Customer("Martha Geldard", 6)
-};
+vector<Customer> customers;  // Declare customers here
 
 vector<Movie> movies = {
     Movie("Alien", "Sci-Fi", true),
@@ -28,16 +21,18 @@ vector<Movie> movies = {
     Movie("The Omen", "Horror", true)
 };
 
-void showMenu() {
-    cout << "Welcome to the Movie Rental System\n";
-    cout << "1. Rent a movie\n";
-    cout << "2. Return a movie\n";
-    cout << "3. View rented movies\n";
-    cout << "4. View transaction history\n";
-    cout << "5. Exit\n";
-}
+// Declare the showMenu function before main
+void showMenu();
 
 int main() {
+    // Initialize customers
+    customers.push_back(Customer("Hamilton Cormack", 1));
+    customers.push_back(Customer("George Gill", 2));
+    customers.push_back(Customer("Chris Taylor", 3));
+    customers.push_back(Customer("Mary Forge", 4));
+    customers.push_back(Customer("Remy Boffey", 5));
+    customers.push_back(Customer("Martha Geldard", 6));
+
     // Add movies to the owner's inventory
     for (auto& movie : movies) {
         owner.addMovie(movie);
@@ -51,12 +46,13 @@ int main() {
         int customerID;
 
         switch (choice) {
-            case 1: {
+            case 1:
                 owner.viewInventory();
                 cout << "Enter movie title to rent: ";
                 cin.ignore();
                 getline(cin, movieTitle);
 
+                // Find the movie to rent
                 Movie* selectedMovie = nullptr;
                 for (auto& movie : movies) {
                     if (movie.getTitle() == movieTitle && movie.isAvailable()) {
@@ -70,8 +66,8 @@ int main() {
                     cin >> customerID;
 
                     if (customerID >= 1 && customerID <= 6) {
-                        // Hardcode the rental date for simplicity
-                        customers[customerID - 1].addRental(selectedMovie, "2025-02-18");
+                        customers[customerID - 1].addRental(selectedMovie);
+                        selectedMovie->rentMovie();
                         cout << "Movie rented to " << customers[customerID - 1].getName() << endl;
                     } else {
                         cout << "Invalid customer ID!" << endl;
@@ -80,9 +76,8 @@ int main() {
                     cout << "Movie not found or not available!" << endl;
                 }
                 break;
-            }
 
-            case 2: {
+            case 2:
                 cout << "Enter customer ID to return movie: ";
                 cin >> customerID;
 
@@ -92,6 +87,7 @@ int main() {
                     cin.ignore();
                     getline(cin, movieTitle);
 
+                    // Find the movie to return
                     Movie* movieToReturn = nullptr;
                     for (auto& movie : movies) {
                         if (movie.getTitle() == movieTitle && !movie.isAvailable()) {
@@ -101,8 +97,10 @@ int main() {
                     }
 
                     if (movieToReturn) {
-                        // Hardcode the return date for simplicity
-                        customers[customerID - 1].removeRental(movieToReturn, "2025-02-19");
+                       // Rent the movie to the selected customer
+                        customers[customerID - 1].addRental(selectedMovie);  // Only pass the movie, no need for the date now
+
+                        movieToReturn->returnMovie();
                         cout << "You have returned " << movieTitle << endl;
                     } else {
                         cout << "Movie not found or not rented!" << endl;
@@ -111,9 +109,8 @@ int main() {
                     cout << "Invalid customer ID!" << endl;
                 }
                 break;
-            }
 
-            case 3: {
+            case 3:
                 cout << "Enter customer ID to view rented movies: ";
                 cin >> customerID;
 
@@ -123,21 +120,8 @@ int main() {
                     cout << "Invalid customer ID!" << endl;
                 }
                 break;
-            }
 
-            case 4: {
-                cout << "Enter customer ID to view transaction history: ";
-                cin >> customerID;
-
-                if (customerID >= 1 && customerID <= 6) {
-                    customers[customerID - 1].viewTransactions();
-                } else {
-                    cout << "Invalid customer ID!" << endl;
-                }
-                break;
-            }
-
-            case 5:
+            case 4:
                 cout << "Thank you for using the system!\n";
                 break;
 
@@ -145,7 +129,16 @@ int main() {
                 cout << "Invalid choice. Please try again.\n";
                 break;
         }
-    } while (choice != 5);
+    } while (choice != 4);
 
     return 0;
+}
+
+// Define the showMenu function
+void showMenu() {
+    cout << "Welcome to the Movie Rental System\n";
+    cout << "1. Rent a movie\n";
+    cout << "2. Return a movie\n";
+    cout << "3. View rented movies\n";
+    cout << "4. Exit\n";
 }
