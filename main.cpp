@@ -27,7 +27,7 @@ vector<Movie> movies = {
 // Function declaration for the showMenu function
 void showMenu();
 
-int main() {
+/*int main() {
     // Initialise the customers vector with six Customer objects
     customers.push_back(Customer("Hamilton Cormack", 1));
     customers.push_back(Customer("George Gill", 2));
@@ -44,7 +44,16 @@ int main() {
     int choice; // Variable to store user input for menu options
     do {
         showMenu(); // Display the menu to the user
-        cin >> choice; // Get user input for the menu option
+        
+        // Clear the input buffer to remove any leftover characters
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); 
+
+        cout << "Please enter your choice (1-4): ";  // Display prompt for user input
+        cin >> choice;
+
+        // Debugging message to show what option the user chose
+        cout << "DEBUG: User chose option " << choice << endl;
+
         string movieTitle; // String to hold movie title input
         int customerID; // Integer to hold customer ID input
 
@@ -139,7 +148,48 @@ int main() {
     } while (choice != 4); // Loop until the user chooses to exit (choice 4)
 
     return 0; // Exit the program
+}*/
+
+int main() {
+    int choice;
+    
+    do {
+        // Display menu options
+        cout << "Welcome to the Movie Rental System\n";
+        cout << "1. Rent a movie\n";
+        cout << "2. Return a movie\n";
+        cout << "3. View rented movies\n";
+        cout << "4. Exit\n";
+
+        // Get the user's choice
+        cout << "Please enter your choice (1-4): ";
+        cin >> choice;
+
+        // Debug message to confirm input
+        cout << "DEBUG: You chose option " << choice << endl;
+
+        // Menu option handling
+        switch (choice) {
+            case 1:
+                cout << "You chose to rent a movie.\n";
+                break;
+            case 2:
+                cout << "You chose to return a movie.\n";
+                break;
+            case 3:
+                cout << "You chose to view rented movies.\n";
+                break;
+            case 4:
+                cout << "You chose to exit.\n";
+                break;
+            default:
+                cout << "Invalid choice. Please try again.\n";
+        }
+    } while (choice != 4);  // Exit when choice is 4
+
+    return 0;
 }
+
 
 // Define the function to show the menu options
 void showMenu() {
