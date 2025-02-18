@@ -57,14 +57,19 @@ int main() {
         
         switch (choice) {
             case 1:
+
                 owner.viewInventory();
                 cout << "Enter movie title to rent: ";
-                cin.ignore();  // Clear input buffer
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');  // Clear input buffer
                 getline(cin, movieTitle);  // Allow spaces in movie titles
+
+                // Debugging: Check if movieTitle was read correctly
+                cout << "DEBUG: You entered movie title: " << movieTitle << endl;
 
                 // Find the selected movie
                 Movie* selectedMovie = nullptr;
                 for (auto& movie : owner.getInventory()) {
+                    cout << "DEBUG: Checking movie in inventory: " << movie.getTitle() << endl; // Debugging
                     if (movie.getTitle() == movieTitle && movie.isAvailable()) {
                         selectedMovie = &movie;
                         break;
@@ -72,30 +77,15 @@ int main() {
                 }
 
                 if (selectedMovie) {
+                    cout << "DEBUG: Movie found: " << selectedMovie->getTitle() << endl;
+
                     cout << "Enter customer ID (1-6): ";
                     int customerID;
                     cin >> customerID;
 
-                    // Check if the customer ID is valid
-                    if (customerID >= 1 && customerID <= 6) {
-                        customers[customerID - 1].addRental(selectedMovie);
-                        cout << "Movie rented to " << customers[customerID - 1].getName() << endl;
-                        selectedMovie->rentMovie();  // Mark the movie as rented
-                    } else {
-                        cout << "Invalid customer ID!" << endl;
-                    }
-                } else {
-                    cout << "Movie not found or not available!" << endl;
-                }
-                break;
+                    // Debugging: Check if input was read correctly
+                    cout << "DEBUG: Customer ID entered: " << customerID << endl;
 
-
-                if (selectedMovie) {
-                    cout << "Enter customer ID (1-6): ";
-                    int customerID;
-                    cin >> customerID;
-
-                    // Check if the customer ID is valid
                     if (customerID >= 1 && customerID <= 6) {
                         customers[customerID - 1].addRental(selectedMovie);
                         cout << "Movie rented to " << customers[customerID - 1].getName() << endl;
